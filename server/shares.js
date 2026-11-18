@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { titleFromText, asIso } from './text.js';
 
 const SHARE_HOST = 'chat.deepseek.com';
-const MAX_RESPONSE_BYTES = 5 * 1024 * 1024;
+const MAX_RESPONSE_BYTES = 64 * 1024 * 1024;
 const SHARE_ID_RE = /^[A-Za-z0-9_-]{6,64}$/;
 
 export class ShareImportError extends Error {
