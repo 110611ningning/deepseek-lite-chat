@@ -1,0 +1,11 @@
+node_modules
+data
+_run
+_test
+.git
+.gitignore
+*.log
+test
+dist
+README.md
+RAILWAY_DEPLOY.md
