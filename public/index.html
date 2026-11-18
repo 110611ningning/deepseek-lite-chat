@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f7f7f8">
+  <meta name="description" content="极简 DeepSeek 网页聊天：自动阅读网页、加密保存 API Key、对话导入导出与分享。">
+  <title>DeepSeek 极简聊天</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m8 8 4-4 4 4"/><path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.37a1.7 1.7 0 0 0-1 .63 1.7 1.7 0 0 0-.37 1.06V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.3a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.23 15a1.7 1.7 0 0 0-.63-1 1.7 1.7 0 0 0-1.06-.37H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.1 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.5 4.23a1.7 1.7 0 0 0 1-.63 1.7 1.7 0 0 0 .37-1.06V2.5a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.4 4.1a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.77 8.5c.14.38.36.72.63 1 .3.28.68.44 1.07.47h.03a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.6 1.03Z"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m10.85 12.15 8.4-8.4M18 5l2 2M15 8l2 2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m8 11 4 4 4-4"/><path d="M5 19h14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 20V9"/><path d="m8 13 4-4 4 4"/><path d="M5 5h14"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l2.12-2.12a5 5 0 0 0-7.07-7.07L10.83 5.1"/><path d="M14 11a5 5 0 0 0-7.07 0L4.81 13.12a5 5 0 0 0 7.07 7.07l1.29-1.29"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.8 3.2 7.4 8 8-4.8.6-7.4 3.2-8 8-.6-4.8-3.2-7.4-8-8 4.8-.6 7.4-3.2 8-8Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></symbol>
+  </svg>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-side">
+        <button id="historyBtn" class="icon-button" type="button" aria-label="打开对话历史" title="对话历史">
+          <svg class="icon"><use href="#i-menu"></use></svg>
+        </button>
+      </div>
+
+      <button id="titleButton" class="title-button" type="button" aria-label="打开对话历史">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 14.2c2.6 0 4.1-2.2 7-2.2 2.3 0 3.7 1.4 5.5 1.4 1.1 0 2-.4 2.8-1.1-.2 4.3-3.6 7.6-7.9 7.6A7.6 7.6 0 0 1 4 13.7v.5Z" fill="currentColor"/>
+            <path d="M7 7.5c1.7 1.5 3.9 2.2 6.8 2.3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <circle cx="16.4" cy="12" r=".9" fill="currentColor"/>
+          </svg>
+        </span>
+        <span id="chatTitle" class="chat-title">DeepSeek</span>
+      </button>
+
+      <div class="topbar-side topbar-right">
+        <button id="shareBtn" class="icon-button" type="button" aria-label="分享这段对话" title="分享" hidden>
+          <svg class="icon"><use href="#i-share"></use></svg>
+        </button>
+        <button id="settingsBtn" class="icon-button" type="button" aria-label="打开设置" title="设置">
+          <svg class="icon"><use href="#i-settings"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <div id="empty" class="empty">
+        <div class="empty-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 14.2c2.6 0 4.1-2.2 7-2.2 2.3 0 3.7 1.4 5.5 1.4 1.1 0 2-.4 2.8-1.1-.2 4.3-3.6 7.6-7.9 7.6A7.6 7.6 0 0 1 4 13.7v.5Z" fill="currentColor"/>
+            <path d="M7 7.5c1.7 1.5 3.9 2.2 6.8 2.3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            <circle cx="16.4" cy="12" r=".9" fill="currentColor"/>
+          </svg>
+        </div>
+        <h1 id="emptyTitle">今天想聊点什么？</h1>
+        <p id="emptyText">粘贴任意公开网页链接，我会自动阅读并总结。</p>
+        <div id="exampleRow" class="example-row">
+          <button class="example-chip" type="button" data-fill="总结这个网页：https://example.com">
+            <svg class="icon"><use href="#i-link"></use></svg>
+            总结一个网页
+          </button>
+          <button class="example-chip" type="button" data-fill="用简单的话解释一下量子纠缠">
+            <svg class="icon"><use href="#i-spark"></use></svg>
+            解释一个概念
+          </button>
+        </div>
+        <button id="emptyKeyBtn" class="key-notice" type="button" hidden>
+          <svg class="icon"><use href="#i-key"></use></svg>
+          先设置 DeepSeek API Key
+        </button>
+        <button id="retryBtn" class="primary-button retry-button" type="button" hidden>
+          <svg class="icon"><use href="#i-refresh"></use></svg>
+          重新加载
+        </button>
+      </div>
+      <div id="messages" class="messages" role="log" aria-live="polite" aria-label="对话内容"></div>
+    </main>
+
+    <div id="shareNotice" class="share-notice" hidden>
+      <svg class="icon"><use href="#i-share"></use></svg>
+      你正在查看一段分享对话，发送消息会把它复制到你的空间继续聊
+    </div>
+
+    <footer class="composer-wrap">
+      <form id="composer" class="composer">
+        <div class="composer-box">
+          <textarea id="prompt" rows="1" maxlength="32000" placeholder="给 DeepSeek 发送消息…" enterkeyhint="send" aria-label="消息"></textarea>
+          <div class="composer-bottom">
+            <span class="read-hint">
+              <svg class="icon"><use href="#i-globe"></use></svg>
+              链接自动阅读
+            </span>
+            <button id="sendBtn" class="send-button" type="submit" aria-label="发送" disabled>
+              <svg class="icon icon-send"><use href="#i-send"></use></svg>
+              <svg class="icon icon-stop"><use href="#i-stop"></use></svg>
+            </button>
+          </div>
+        </div>
+      </form>
+      <p class="footnote">AI 生成内容仅供参考 · 消耗你账户的 DeepSeek API 余额</p>
+    </footer>
+  </div>
+
+  <div id="drawerLayer" class="drawer-layer" aria-hidden="true">
+    <div class="drawer-backdrop" data-close-drawer></div>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-label="对话历史">
+      <div class="drawer-head">
+        <span>对话</span>
+        <button id="drawerClose" class="icon-button" type="button" aria-label="关闭对话历史">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+      <button id="drawerNew" class="new-chat-button" type="button">
+        <span class="new-chat-icon"><svg class="icon"><use href="#i-plus"></use></svg></span>
+        新对话
+      </button>
+      <div id="conversationList" class="conversation-list"></div>
+      <p class="drawer-foot">对话只保存在这个浏览器对应的私密空间</p>
+    </aside>
+  </div>
+
+  <dialog id="settingsDialog" class="modal">
+    <div class="modal-card settings-card">
+      <header class="modal-head">
+        <div>
+          <h2>设置</h2>
+          <p class="modal-subtitle">密钥与数据管理</p>
+        </div>
+        <button class="icon-button modal-close" type="button" data-close-dialog="settingsDialog" aria-label="关闭设置">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <section class="settings-section">
+          <div class="section-title-row">
+            <h3>DeepSeek API Key</h3>
+            <span id="keyStatus" class="status-pill status-off">未设置</span>
+          </div>
+          <p class="section-desc">Key 通过 HTTPS 发送到服务器后加密保存，浏览器不保存明文。所有请求由本服务转发到 DeepSeek，费用来自你自己的 API 余额。</p>
+          <form id="keyForm" class="key-form">
+            <div class="key-input-wrap">
+              <svg class="icon key-icon"><use href="#i-key"></use></svg>
+              <input id="apiKeyInput" type="password" placeholder="粘贴 sk- 开头的 API Key" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="DeepSeek API Key">
+            </div>
+            <button id="saveKeyBtn" class="primary-button" type="submit">保存</button>
+          </form>
+          <p id="keyFormMessage" class="form-message" role="status"></p>
+          <a class="inline-link" href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer">
+            去 DeepSeek 开放平台创建 API Key
+            <svg class="icon"><use href="#i-chevron"></use></svg>
+          </a>
+        </section>
+
+        <section class="settings-section data-section">
+          <h3>数据管理</h3>
+          <p class="section-desc">导入不会删除已有对话；导出的 ZIP 与 DeepSeek 官网格式兼容。</p>
+
+          <div class="data-list">
+            <button id="deleteKeyRow" class="data-row danger" type="button">
+              <span class="data-icon"><svg class="icon"><use href="#i-key"></use></svg></span>
+              <span class="data-copy">
+                <strong>删除 API Key</strong>
+                <small>从服务器彻底移除已保存的密钥</small>
+              </span>
+              <svg class="icon chevron"><use href="#i-chevron"></use></svg>
+            </button>
+
+            <button id="importHistoryRow" class="data-row" type="button">
+              <span class="data-icon"><svg class="icon"><use href="#i-upload"></use></svg></span>
+              <span class="data-copy">
+                <strong>导入历史对话</strong>
+                <small>选择 DeepSeek 官网导出的 ZIP 对话包</small>
+              </span>
+              <svg class="icon chevron"><use href="#i-chevron"></use></svg>
+            </button>
+            <input id="historyFileInput" type="file" accept=".zip,application/zip" hidden>
+
+            <div class="data-row data-row-static">
+              <span class="data-icon"><svg class="icon"><use href="#i-link"></use></svg></span>
+              <span class="data-copy">
+                <strong>从分享链接导入</strong>
+                <small>粘贴 chat.deepseek.com/share/ 开头的链接</small>
+                <span class="share-import-line">
+                  <input id="shareUrlInput" type="url" placeholder="https://chat.deepseek.com/share/…" autocomplete="off" spellcheck="false" aria-label="DeepSeek 分享链接">
+                  <button id="importShareBtn" class="small-button" type="button">导入</button>
+                </span>
+                <span id="shareImportMessage" class="form-message" role="status"></span>
+              </span>
+            </div>
+
+            <button id="exportRow" class="data-row" type="button">
+              <span class="data-icon"><svg class="icon"><use href="#i-download"></use></svg></span>
+              <span class="data-copy">
+                <strong>导出所有历史对话</strong>
+                <small>打包下载 ZIP，可用于备份或换设备</small>
+              </span>
+              <svg class="icon chevron"><use href="#i-chevron"></use></svg>
+            </button>
+
+            <button id="deleteAllRow" class="data-row danger" type="button">
+              <span class="data-icon"><svg class="icon"><use href="#i-trash"></use></svg></span>
+              <span class="data-copy">
+                <strong>删除全部对话</strong>
+                <small>同时让已生成的分享链接失效，API Key 会保留</small>
+              </span>
+              <svg class="icon chevron"><use href="#i-chevron"></use></svg>
+            </button>
+          </div>
+          <p id="dataMessage" class="form-message" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="shareDialog" class="modal">
+    <div class="modal-card small-card">
+      <header class="modal-head">
+        <div>
+          <h2>分享链接已生成</h2>
+          <p class="modal-subtitle">任何拿到链接的人都能查看这段对话快照</p>
+        </div>
+        <button class="icon-button modal-close" type="button" data-close-dialog="shareDialog" aria-label="关闭分享">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+      <div class="modal-body">
+        <div class="copy-field">
+          <input id="shareUrlOutput" type="text" readonly aria-label="分享链接">
+          <button id="copyShareBtn" class="primary-button" type="button">
+            <svg class="icon"><use href="#i-copy"></use></svg>
+            复制
+          </button>
+        </div>
+        <p class="dialog-note">对方打开链接后可以直接查看完整对话；填入自己的 API Key 就能继续这段对话，不会动用你的余额。</p>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="confirmDialog" class="modal">
+    <div class="modal-card small-card confirm-card">
+      <header class="modal-head">
+        <div>
+          <h2 id="confirmTitle">确认操作</h2>
+          <p id="confirmText" class="modal-subtitle"></p>
+        </div>
+      </header>
+      <div class="modal-actions">
+        <button id="confirmCancel" class="secondary-button" type="button">取消</button>
+        <button id="confirmOk" class="danger-button" type="button">确认删除</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
